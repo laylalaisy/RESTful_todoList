@@ -27,6 +27,8 @@ server.listen( 3000, function() {
   console.log( 'Listening on port 3000' );
 });
 
+router.use(BodyParser.text());
+
 /* create item */
 function createItem(request, response){
   var id = counter += 1,
@@ -40,6 +42,8 @@ function createItem(request, response){
   });
   response.end('Item');
 }
+
+router.post('/todo', createItem);
 
 // GET: read item content
 function readItem(request, response){
@@ -58,7 +62,24 @@ function readItem(request, response){
   response.end(item + '\n');
 }
 
-
-router.use(BodyParser.text());
-router.post('/todo', createItem);
 router.get('/todo/:id', readItem);
+
+/* delete item */
+function deleteItem(request, response){
+  var id = request.params.id;
+
+  if(typeof todoList[id] !=='string'){
+    console.log('Item not found', id);
+    response.writeHead(404);
+    response.end('\n');
+    return;
+  }
+  console.log('Delete item', id);
+  todoList[id] = undefined;   // delete item
+  response.writeHead(204, {
+    'Content-Type' : 'text/plain'
+  });
+  response.end('');           // response nothing
+}
+
+router.delete('/todo/:id', deleteItem);
