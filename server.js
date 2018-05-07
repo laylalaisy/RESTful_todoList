@@ -27,8 +27,6 @@ server.listen( 3000, function() {
 
 router.use(BodyParser.text());
 
-
-
 function createItem(request, response){
   var id = counter += 1,
       item = request.body;
@@ -43,3 +41,23 @@ function createItem(request, response){
 }
 
 router.post('/todo', createItem);
+
+// GET: read item content
+function readItem(request, response){
+  var id = request.params.id,
+      item = todoList[id];
+  if(typeof item !== 'string'){
+    console.log('Item not found', id);
+    response.writeHead(404);
+    response.end('\n');
+    return;
+  }
+  console.log('Read item', id, item);
+
+  response.writeHead(200, {
+    'Content-Type': 'text/plain'
+  });
+  response.end(item + '\n');
+}
+
+router.get('/todo/:id', readItem);
