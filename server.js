@@ -83,3 +83,40 @@ function deleteItem(request, response){
 }
 
 router.delete('/todo/:id', deleteItem);
+
+/* read items list */
+function readList(request, response){
+  var item,
+      itemList = [],
+      listString;
+
+  for(id in todoList){
+    if(!todoList.hasOwnProperty(id)){   // test if this id is existed
+      continue;
+    }
+    item = todoList[id];
+    if(typeof item !== 'string'){       // test if this id is valid
+      continue;
+    }
+    itemList.push(item);
+  }
+  console.log('Read List: \n', JSON.stringify(
+    itemList,
+    null,
+    ' '
+  ));
+  listString = itemList.join('\n');
+  response.writeHead(200, {
+    'Content-Type' : 'text/plain'
+  });
+  response.end(listString + '\n');
+}
+router.get('/todo', readList);
+
+
+
+
+
+
+
+
