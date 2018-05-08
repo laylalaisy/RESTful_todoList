@@ -29,7 +29,7 @@ server.listen( 3000, function() {
 
 router.use(BodyParser.text());
 
-/* create item */
+/* POST: create item */
 function createItem(request, response){
   var id = counter += 1,
       item = request.body;
@@ -45,7 +45,7 @@ function createItem(request, response){
 
 router.post('/todo', createItem);
 
-// GET: read item content
+// GET: read item
 function readItem(request, response){
   var id = request.params.id,
       item = todoList[id];
@@ -64,7 +64,7 @@ function readItem(request, response){
 
 router.get('/todo/:id', readItem);
 
-/* delete item */
+/* DELETE: delete item */
 function deleteItem(request, response){
   var id = request.params.id;
 
@@ -84,7 +84,7 @@ function deleteItem(request, response){
 
 router.delete('/todo/:id', deleteItem);
 
-/* read items list */
+/* GET: read item list */
 function readList(request, response){
   var item,
       itemList = [],
@@ -113,6 +113,7 @@ function readList(request, response){
 }
 router.get('/todo', readList);
 
+/* PUT: update item */
 function updateItem(request, response){
   var id = request.params.id,
       item = request.body;
